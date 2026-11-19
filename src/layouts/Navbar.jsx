@@ -78,10 +78,6 @@ export const Navbar = () => {
         >
           {isDark ? <FaRegMoon /> : <FaRegSun />}
         </button>
-
-        <button className="primary-button" type="button">
-          Hire Me
-        </button>
       </div>
     </header>
   );

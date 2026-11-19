@@ -13,6 +13,88 @@ export default function ProjectDetailLayout({
   recommendations = [],
   stack = [],
   visual,
+  analyticalObjective = `This project evaluates multichannel marketing performance to
+                identify inefficient spending, understand performance drivers,
+                and develop data-driven recommendations for improving ROAS
+                while supporting revenue growth.`,
+  businessContext = {
+    paragraphs: [
+      "The business is a direct-to-consumer fitness supplements brand running multichannel marketing campaigns across Facebook, Google, and TikTok.",
+      "The main objective is to optimize marketing spend, improve advertising efficiency, and support revenue growth while maintaining profitability.",
+    ],
+    metrics: [
+      { label: "Monthly Ad Spend", value: "$1.6M" },
+      { label: "Current ROAS", value: "0.86" },
+      { label: "Minimum ROAS Target", value: "1.20" },
+      { label: "Revenue Growth Goal", value: "40%" },
+    ],
+    challenges: [
+      "Overall ROAS is below the required business target.",
+      "Marketing performance varies across platforms, campaigns, creatives, and product categories.",
+      "Weekly campaign efficiency has been declining.",
+      "Regional performance patterns require further analysis.",
+      "The impact of competitive events is not yet fully understood.",
+      "Underperforming areas need to be reduced while protecting revenue growth.",
+    ],
+  },
+  dataQuality = {
+    objective:
+      "Before analyzing campaign performance, the dataset must be reviewed for completeness, consistency, accuracy, and unusual values. This helps ensure that the insights and recommendations are based on reliable information.",
+    scope: [
+      "Three months of daily marketing performance data",
+      "Analysis period: January to March 2024",
+      "Platforms: Facebook, Google, and TikTok",
+      "Regions: West, South, Northeast, and Midwest",
+      "Product categories: Pre-workout, Protein, Weight Loss, and Diet",
+      "Creative types: Video, Image, Carousel, Search, and Display",
+      "Target audiences: Athletes, Fitness Enthusiasts, and Weight Loss",
+    ],
+    checks: [
+      "Identify and handle missing values.",
+      "Check for duplicate records.",
+      "Validate date formats and categorical values.",
+      "Review unusual values in ad spend, revenue, clicks, impressions, and purchases.",
+      "Check whether zero or null values affect metric calculations.",
+      "Document assumptions made during data preparation.",
+    ],
+    metricsTable: [
+      { metric: "CTR", formula: "Clicks ÷ Impressions × 100", purpose: "Measures ad engagement" },
+      { metric: "CPC", formula: "Ad Spend ÷ Clicks", purpose: "Measures cost per click" },
+      { metric: "CVR", formula: "Purchases ÷ Clicks × 100", purpose: "Measures conversion efficiency" },
+      { metric: "ROAS", formula: "Revenue ÷ Ad Spend", purpose: "Measures advertising return" },
+    ],
+    documentation:
+      "The final analysis should document the data issues identified, the cleaning actions performed, and the assumptions that may influence the interpretation of the results.",
+  },
+  methodology = {
+    approach: [
+      "Understand the business objectives and performance targets.",
+      "Inspect and clean the dataset.",
+      "Validate the core marketing performance metrics.",
+      "Conduct exploratory data analysis.",
+      "Compare performance across platforms, regions, creatives, products, and audiences.",
+      "Evaluate weekly trends and competitive-event effects.",
+      "Translate findings into prioritized recommendations.",
+      "Define a measurement plan for tracking improvements.",
+    ],
+    statistical: [
+      "Statistical significance testing can be used to determine whether observed differences between platforms or regions are likely to represent meaningful performance variation rather than random fluctuations.",
+      "The final report should document the statistical tests used, significance levels, assumptions, and interpretation of the results.",
+    ],
+    measurement: [
+      "Primary metric: ROAS",
+      "Efficiency metrics: CPC, CPM, CTR, and CVR",
+      "Business outcomes: Revenue and profitability",
+      "Customer value metric: Customer LTV",
+      "Monitoring frequency: Weekly and monthly performance reviews",
+    ],
+    assumptions: [
+      "Missing or inconsistent records may affect certain calculations.",
+      "Correlation between metrics does not necessarily indicate causation.",
+      "Competitive events and seasonality may influence campaign performance.",
+      "Budget recommendations should be validated through controlled testing and ongoing monitoring.",
+    ],
+  },
 }) {
   const [activePage, setActivePage] = useState("overview");
 
@@ -87,12 +169,7 @@ export default function ProjectDetailLayout({
             <section className="project-panel">
               <h3>Analytical Objective</h3>
 
-              <p>
-                This project evaluates multichannel marketing performance to
-                identify inefficient spending, understand performance drivers,
-                and develop data-driven recommendations for improving ROAS
-                while supporting revenue growth.
-              </p>
+              <p>{analyticalObjective}</p>
             </section>
           </div>
         );
@@ -116,65 +193,29 @@ export default function ProjectDetailLayout({
             <section className="project-panel">
               <h3>Business Situation</h3>
 
-              <p>
-                The business is a direct-to-consumer fitness supplements brand
-                running multichannel marketing campaigns across Facebook,
-                Google, and TikTok.
-              </p>
-
-              <p>
-                The main objective is to optimize marketing spend, improve
-                advertising efficiency, and support revenue growth while
-                maintaining profitability.
-              </p>
+              {businessContext.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </section>
 
-            <section className="project-kpi-grid">
-              <div className="project-kpi-card">
-                <span>Monthly Ad Spend</span>
-                <strong>$1.6M</strong>
-              </div>
-
-              <div className="project-kpi-card">
-                <span>Current ROAS</span>
-                <strong>0.86</strong>
-              </div>
-
-              <div className="project-kpi-card">
-                <span>Minimum ROAS Target</span>
-                <strong>1.20</strong>
-              </div>
-
-              <div className="project-kpi-card">
-                <span>Revenue Growth Goal</span>
-                <strong>40%</strong>
-              </div>
-            </section>
+            {businessContext.metrics.length > 0 && (
+              <section className="project-kpi-grid">
+                {businessContext.metrics.map((item) => (
+                  <div key={item.label} className="project-kpi-card">
+                    <span>{item.label}</span>
+                    <strong>{item.value}</strong>
+                  </div>
+                ))}
+              </section>
+            )}
 
             <section className="project-panel">
               <h3>Key Business Challenges</h3>
 
               <ul className="project-bullets">
-                <li>
-                  Overall ROAS is below the required business target.
-                </li>
-                <li>
-                  Marketing performance varies across platforms, campaigns,
-                  creatives, and product categories.
-                </li>
-                <li>
-                  Weekly campaign efficiency has been declining.
-                </li>
-                <li>
-                  Regional performance patterns require further analysis.
-                </li>
-                <li>
-                  The impact of competitive events is not yet fully understood.
-                </li>
-                <li>
-                  Underperforming areas need to be reduced while protecting
-                  revenue growth.
-                </li>
+                {businessContext.challenges.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ul>
             </section>
           </div>
@@ -199,33 +240,16 @@ export default function ProjectDetailLayout({
             <section className="project-panel">
               <h3>Data Preparation Objective</h3>
 
-              <p>
-                Before analyzing campaign performance, the dataset must be
-                reviewed for completeness, consistency, accuracy, and unusual
-                values. This helps ensure that the insights and recommendations
-                are based on reliable information.
-              </p>
+              <p>{dataQuality.objective}</p>
             </section>
 
             <section className="project-panel">
               <h3>Dataset Scope</h3>
 
               <ul className="project-bullets">
-                <li>Three months of daily marketing performance data</li>
-                <li>Analysis period: January to March 2024</li>
-                <li>Platforms: Facebook, Google, and TikTok</li>
-                <li>Regions: West, South, Northeast, and Midwest</li>
-                <li>
-                  Product categories: Pre-workout, Protein, Weight Loss, and
-                  Diet
-                </li>
-                <li>
-                  Creative types: Video, Image, Carousel, Search, and Display
-                </li>
-                <li>
-                  Target audiences: Athletes, Fitness Enthusiasts, and Weight
-                  Loss
-                </li>
+                {dataQuality.scope.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ul>
             </section>
 
@@ -233,17 +257,9 @@ export default function ProjectDetailLayout({
               <h3>Data Quality Checks</h3>
 
               <ul className="project-bullets">
-                <li>Identify and handle missing values.</li>
-                <li>Check for duplicate records.</li>
-                <li>Validate date formats and categorical values.</li>
-                <li>
-                  Review unusual values in ad spend, revenue, clicks,
-                  impressions, and purchases.
-                </li>
-                <li>
-                  Check whether zero or null values affect metric calculations.
-                </li>
-                <li>Document assumptions made during data preparation.</li>
+                {dataQuality.checks.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ul>
             </section>
 
@@ -261,29 +277,13 @@ export default function ProjectDetailLayout({
                   </thead>
 
                   <tbody>
-                    <tr>
-                      <td>CTR</td>
-                      <td>Clicks ÷ Impressions × 100</td>
-                      <td>Measures ad engagement</td>
-                    </tr>
-
-                    <tr>
-                      <td>CPC</td>
-                      <td>Ad Spend ÷ Clicks</td>
-                      <td>Measures cost per click</td>
-                    </tr>
-
-                    <tr>
-                      <td>CVR</td>
-                      <td>Purchases ÷ Clicks × 100</td>
-                      <td>Measures conversion efficiency</td>
-                    </tr>
-
-                    <tr>
-                      <td>ROAS</td>
-                      <td>Revenue ÷ Ad Spend</td>
-                      <td>Measures advertising return</td>
-                    </tr>
+                    {dataQuality.metricsTable.map((row) => (
+                      <tr key={row.metric}>
+                        <td>{row.metric}</td>
+                        <td>{row.formula}</td>
+                        <td>{row.purpose}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -292,11 +292,7 @@ export default function ProjectDetailLayout({
             <section className="project-panel">
               <h3>Data Quality Documentation</h3>
 
-              <p>
-                The final analysis should document the data issues identified,
-                the cleaning actions performed, and the assumptions that may
-                influence the interpretation of the results.
-              </p>
+              <p>{dataQuality.documentation}</p>
             </section>
           </div>
         );
@@ -369,6 +365,18 @@ export default function ProjectDetailLayout({
                     </tbody>
                   </table>
                 </div>
+              </section>
+            )}
+
+            {findings.length > 0 && (
+              <section className="project-panel">
+                <h3>Key Findings</h3>
+
+                <ul className="project-bullets">
+                  {findings.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
               </section>
             )}
 
@@ -515,54 +523,27 @@ export default function ProjectDetailLayout({
               <h3>Analytical Approach</h3>
 
               <ol className="project-bullets">
-                <li>
-                  Understand the business objectives and performance targets.
-                </li>
-                <li>Inspect and clean the dataset.</li>
-                <li>Validate the core marketing performance metrics.</li>
-                <li>Conduct exploratory data analysis.</li>
-                <li>
-                  Compare performance across platforms, regions, creatives,
-                  products, and audiences.
-                </li>
-                <li>
-                  Evaluate weekly trends and competitive-event effects.
-                </li>
-                <li>Translate findings into prioritized recommendations.</li>
-                <li>
-                  Define a measurement plan for tracking improvements.
-                </li>
+                {methodology.approach.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ol>
             </section>
 
             <section className="project-panel">
               <h3>Statistical Analysis</h3>
 
-              <p>
-                Statistical significance testing can be used to determine
-                whether observed differences between platforms or regions are
-                likely to represent meaningful performance variation rather
-                than random fluctuations.
-              </p>
-
-              <p>
-                The final report should document the statistical tests used,
-                significance levels, assumptions, and interpretation of the
-                results.
-              </p>
+              {methodology.statistical.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </section>
 
             <section className="project-panel">
               <h3>Measurement Framework</h3>
 
               <ul className="project-bullets">
-                <li>Primary metric: ROAS</li>
-                <li>Efficiency metrics: CPC, CPM, CTR, and CVR</li>
-                <li>Business outcomes: Revenue and profitability</li>
-                <li>Customer value metric: Customer LTV</li>
-                <li>
-                  Monitoring frequency: Weekly and monthly performance reviews
-                </li>
+                {methodology.measurement.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ul>
             </section>
 
@@ -570,22 +551,9 @@ export default function ProjectDetailLayout({
               <h3>Assumptions and Limitations</h3>
 
               <ul className="project-bullets">
-                <li>
-                  Missing or inconsistent records may affect certain
-                  calculations.
-                </li>
-                <li>
-                  Correlation between metrics does not necessarily indicate
-                  causation.
-                </li>
-                <li>
-                  Competitive events and seasonality may influence campaign
-                  performance.
-                </li>
-                <li>
-                  Budget recommendations should be validated through controlled
-                  testing and ongoing monitoring.
-                </li>
+                {methodology.assumptions.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ul>
             </section>
           </div>

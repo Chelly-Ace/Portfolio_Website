@@ -470,6 +470,7 @@ img {
   gap: 2px;
   align-items: center; /* center ADV. over subtitle */
 }
+
 .brand-subtitle {
   font-size: 0.75rem;
   font-weight: 500;
@@ -1449,6 +1450,24 @@ html[data-theme="dark"] .portrait-frame:hover {
 .wide-button {
   width: fit-content;
   min-width: 180px;
+}
+
+.contact-form-spinner {
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-right: 0.5em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  vertical-align: -0.1em;
+  animation: contact-form-spin 0.7s linear infinite;
+}
+
+@keyframes contact-form-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .site-footer {

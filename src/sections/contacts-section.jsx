@@ -1,4 +1,16 @@
+import { useEffect, useRef } from "react";
+import { useForm, ValidationError } from "@formspree/react";
+
 export const Contact = () => {
+  const [state, handleSubmit] = useForm("mrpzvwlk");
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    if (state.succeeded) {
+      formRef.current?.reset();
+    }
+  }, [state.succeeded]);
+
   return (
     <section className="contact-section" id="contact" data-reveal>
       <div className="contact-copy" data-reveal>
@@ -16,32 +28,47 @@ export const Contact = () => {
         </ul>
       </div>
 
-      <form className="contact-form" data-reveal>
+      <form ref={formRef} className="contact-form" data-reveal onSubmit={handleSubmit}>
         <div className="form-row">
           <label>
             Your Name
-            <input type="text" placeholder="Your Name" />
+            <input type="text" name="name" placeholder="Your Name" required />
+            <ValidationError prefix="Name" field="name" errors={state.errors} />
           </label>
 
           <label>
             Your Email
-            <input type="email" placeholder="Your Email" />
+            <input type="email" name="email" placeholder="Your Email" required />
+            <ValidationError prefix="Email" field="email" errors={state.errors} />
           </label>
         </div>
 
         <label>
           Subject
-          <input type="text" placeholder="Subject" />
+          <input type="text" name="subject" placeholder="Subject" required />
+          <ValidationError prefix="Subject" field="subject" errors={state.errors} />
         </label>
 
         <label>
           Project Details
-          <textarea rows="5" placeholder="Tell me about your project..." />
+          <textarea
+            name="message"
+            rows="5"
+            placeholder="Tell me about your project..."
+            required
+          />
+          <ValidationError prefix="Project Details" field="message" errors={state.errors} />
         </label>
 
-        <button type="submit" className="primary-button wide-button">
-          Send Message
+        <button type="submit" className="primary-button wide-button" disabled={state.submitting}>
+          {state.submitting && <span className="contact-form-spinner" aria-hidden="true" />}
+          {state.submitting ? "Sending..." : "Send Message"}
         </button>
+
+        {state.succeeded && <p role="status">Thanks for your message!</p>}
+        {state.errors && !state.errors.getFormErrors().length && (
+          <p role="alert">There was an error sending your message. Please try again.</p>
+        )}
       </form>
     </section>
   );
